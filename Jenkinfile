@@ -5,7 +5,7 @@ stage('SCM Checkout'){
 git "git@github.com:samirshkumar/Jenkinsfile.git"
 }
 stage('Complie-package'){
-sh 'rm-rf'
+
 sh 'mvn -Pci clean test package deploy'
 
 }

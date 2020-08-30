@@ -2,12 +2,16 @@ node
 {
 
 stage('SCM Checkout'){
-git "git@github.com:samirshkumar/Jenkinsfile.git"
+
+git branch: 'src',
+credentialsId: 'github',
+url: "https://github.com/samirshkumar/Jenkinsfile.git"
+
+
+
 }
 stage('Complie-package'){
 
 sh 'mvn -Pci clean test package deploy'
-
-}
 
 }

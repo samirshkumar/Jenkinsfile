@@ -6,7 +6,7 @@ git "git@github.com:samirshkumar/Jenkinsfile.git"
 }
 stage('Complie-package'){
 sh 'rm-rf'
-sh 'mvn package'
+sh 'mvn cln test package deploy'
 
 }
 

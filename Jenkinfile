@@ -4,7 +4,7 @@ node
 stage('SCM Checkout'){
 
 git branch: 'src',
-credentialsId: 'github',
+credentialsId: 'Global',
 url: "https://github.com/samirshkumar/Jenkinsfile.git"
 
 }

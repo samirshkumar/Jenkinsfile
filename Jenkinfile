@@ -10,7 +10,7 @@ url: "https://github.com/samirshkumar/Jenkinsfile.git"
 }
 stage('Complie-package'){
 
-sh 'mvn -Pci clean test package deploy'
+sh 'mvn -Pci clean test package' 
 
 }
 

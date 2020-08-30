@@ -1,13 +1,25 @@
-node
-{
-
-stage('SCM Checkout'){
-git "git@github.com:samirshkumar/Jenkinsfile.git"
-}
-stage('Complie-package'){
-
-sh 'mvn -Pci clean test package deploy'
-
-}
-
+node{
+   stage('SCM Checkout'){
+       git credentialsId: 'git-creds', url: 'https://github.com/samirshkumar/my-app'
+   }
+   stage('Mvn Package'){
+     def mvnHome = tool name: 'maven-3', type: 'maven'
+     def mvnCMD = "${mvnHome}/bin/mvn"
+     sh "${mvnCMD} clean package"
+   }
+   stage('Build Docker Image'){
+     sh 'docker build -t samirshkumar/my-app:2.0.0 .'
+   }
+   stage('Push Docker Image'){
+     withCredentials([string(credentialsId: 'docker-pwd', variable: 'dockerHubPwd')]) {
+        sh "docker login -u samirshkumar-p ${dockerHubPwd}"
+     }
+     sh 'docker push samirshkumar/my-app:2.0.0'
+   }
+   stage('Run Container on Prod Server'){
+     def dockerRun = 'docker run -p 8080:8080 -d --name my-app samirshkumar/my-app:2.0.0'
+     sshagent(['dev-server']) {
+       sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.18.198 ${dockerRun}"
+     }
+   }
 }
